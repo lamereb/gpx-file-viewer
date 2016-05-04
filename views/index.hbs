@@ -1,0 +1,17 @@
+    <div id="form_upload">
+      <form action="/uploads" method="POST" enctype="multipart/form-data">
+        Load a .gpx file:
+        <input type="file" name="gpx"> 
+        <input type="submit" value="Load">
+        {{error}}
+      </form>
+    </div>
+
+    <div id="map"></div>
+    <div id="path" style="display:none">{{path}}</div>
+    <div id="plotly"></div>
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="/javascripts/mapstuff.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer></script>
+    <!--script src="/javascripts/plotly.js"></script-->
