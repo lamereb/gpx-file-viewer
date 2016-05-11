@@ -31,7 +31,6 @@ router.post('/uploads', uploading.single('gpx'), function(req, res) {
 
   // now, use perl script to generate js-arry of lat/lng coordinates
   cmd = 'perl coords.pl ' + req.file.path + ' > ' + req.file.filename + '/' + req.file.filename;
-  // cmd = 'perl coords.pl ' + req.file.path;
   exec(cmd, function(err, stdout, stderr) {
     if (err || stderr) { 
       console.log("err: " + err); 
@@ -62,24 +61,4 @@ router.get('/gps', function(req, res) {
 });
 
 module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

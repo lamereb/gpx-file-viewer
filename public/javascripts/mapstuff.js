@@ -24,7 +24,7 @@ function getGPS() {
       var res = JSON.parse(xml.responseText);
 
       res.points.pop();
-      // now, need to convert the points to numbers
+      // convert the points to numbers
       for (var i = 0; i < res.points.length; ++i) {
         res.points[i].lat = +res.points[i].lat;
         res.points[i].lng = +res.points[i].lng;
@@ -70,6 +70,7 @@ function getGPS() {
       // now do plotly stuff here with rest of data in res?
       var x_coords = [];
       var y_coords = [];
+      var annotations = [];
       var alt_coords = [];
       var max_pace = 0;
       var min_pace = 100;
@@ -79,6 +80,7 @@ function getGPS() {
       for (var i = 0; i < res.points.length - 1; ++i) {
         x_coords.push(new Date(res.points[i].elapsed * 1000).toISOString().substr(11,8));
         alt_coords.push(res.points[i].elev);
+        annotations.push((res.points[i].distance / 5280).toFixed(2));
         if (res.points[i].elev > max_elev) { max_elev = res.points[i].elev; }
         if (res.points[i].elev < min_elev) { min_elev = res.points[i].elev; }
 
@@ -95,10 +97,11 @@ function getGPS() {
       var distance_trace = {
         x: x_coords,
         y: y_coords,
+        text: annotations,
         line: { shape: 'spline' },
         mode: 'lines',
         type: 'scatter',
-        name: 'min/mile',
+        name: 'mile',
         // yaxis: 'y1',
         marker: {
           color: 'rgb(64,128,64)'
@@ -129,7 +132,6 @@ function getGPS() {
         yaxis: {
           title: 'Average Speed',
           // range: [max_pace + (0.5 * max_pace), min_pace - (0.5 * min_pace)]
-          // range: [0, max_pace + (0.5 * max_pace)]
           range: [0, 1.5 * max_pace]
         },
         yaxis2: {
@@ -152,10 +154,7 @@ function getGPS() {
         marker.setPosition(newPos);
         // use line below if want to keep newPos centered
         // map.panTo(newPos);
-
-      
       });
-
     }
   }
   xml.open("GET", url, true);
